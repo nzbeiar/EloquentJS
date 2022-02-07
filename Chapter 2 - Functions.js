@@ -43,4 +43,22 @@ const countChar = (str, chr) => {
     return counter;
 }
 
-console.log(isEven(7));
+const findSequence = (number) => {
+    const find = (current,history) => {
+        if (current > number)
+        {
+            return null;
+        }
+        else if (current === number)
+        {
+            return history;
+        }
+        else
+        {
+           return find(current+5, `(${history} + 5)`) || find(current*3,`(${history} * 3)`);
+        }
+    }
+    return find(1, "1");
+}
+
+console.log(findSequence(11));

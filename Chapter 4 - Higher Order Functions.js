@@ -19,11 +19,11 @@ const filter = (f, arr) => {
     return filtered;
 }
 
-const reducer = (arr, f) => {
-    let acc = arr[0];
+const reducer = (arr, f,start) => {
+    let acc = start;
     for (let i = 1; i < arr.length; i++)
     {
-        acc = f(acc,arr[i]);
+        acc = f(acc,el);
     }
     return acc;
 }

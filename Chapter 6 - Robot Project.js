@@ -159,24 +159,40 @@ function compareRobots(robot1,memory1,robot2,memory2){
     }
     let total1 = 0,total2 = 0;
     for (let i = 0; i < 100; i++){
-        let task = VillageState.random(5);
+        let task = VillageState.random();
         total1 += newRunRobot(task,robot1,memory1);
         total2 += newRunRobot(task,robot2,memory2);
     }
     return `First robot took on average ${total1/100} steps, and the second ${total2/100}`;
 }
 
-//console.log(compareRobots(randomRobot,[],goalOrientedRobot,[]));
+function quickerRobot({place,parcels}, route){
+    if (route.length === 0) {
+        let routes = parcels.map(p => {
+            if (p.place !== place) {
+                return {route: findRoute(roadGraph, place, p.place)};
+            } else {
+                return {route: findRoute(roadGraph, place, p.address)};
+            }
+        });
+        route = routes.reduce((r1, r2) => r1.route.length >= r2.route.length ? r2 : r1).route;
+    }
+    return {direction: route[0], memory:route.slice(1)};
+}
+
+runRobot(VillageState.random(5),quickerRobot,[]);
+
+console.log(compareRobots(quickerRobot,[],goalOrientedRobot,[]));
 
 class PGroup {
     constructor(group){
         this.group = group;
     }
-    add (...val) {
+    add (val) {
         if (this.has(val)) {
-            return "Already a member";
+            return this;
         }
-        return new PGroup(this.group.concat([...val]));
+        return new PGroup(this.group.concat([val]));
     }
     has (val) {
         return this.group.includes(val);
@@ -193,13 +209,10 @@ let ab = a.add("b");
 let b = ab.delete("a");
 
 console.log(a);
-
 console.log(b.has("b"));
 // → true
 console.log(a.has("b"));
 // → false
 console.log(b.has("a"));
 // → false
-
-
 

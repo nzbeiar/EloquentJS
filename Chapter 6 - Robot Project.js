@@ -33,6 +33,8 @@ function buildGraph(edges){
 
 let roadGraph = buildGraph(roads);
 
+//console.log(roadGraph);
+
 class VillageState {
     constructor(place,parcels)
     {
@@ -80,10 +82,10 @@ VillageState.random = function (parcelCount = 5){
     let parcels = [];
     for (let i = 0; i < parcelCount; i++)
     {
-        let address = randomPick(Object.keys(roadGraph));
-        let place;
+        let place = randomPick(Object.keys(roadGraph));
+        let address;
         do {
-            place = randomPick(Object.keys(roadGraph));
+            address = randomPick(Object.keys(roadGraph));
         }
         while (place === address);
         parcels.push({place,address});
@@ -108,4 +110,96 @@ function routeRobot(state,memory){
     return {direction:memory[0], memory: memory.slice(1)};
 }
 
-runRobot(VillageState.random(),routeRobot,[]);
+//runRobot(VillageState.random(),routeRobot,[]);
+
+function findRoute(graph, from, to) {
+    let work = [{at: from, route: []}];
+    for (let i = 0; i < work.length; i++) {
+        let {at, route} = work[i];
+        for (let place of graph[at]) {
+            if (place === to) {
+                return route.concat(place);
+            }
+            if (!work.some(w => w.at === place)) {
+                work.push({at: place, route: route.concat(place)});
+            }
+        }
+    }
+}
+function goalOrientedRobot({place, parcels}, route) {
+    if (route.length === 0) {
+        let parcel = parcels[0];
+        if (parcel.place !== place) {
+            route = findRoute(roadGraph, place, parcel.place);
+        } else {
+            route = findRoute(roadGraph, place, parcel.address);
+        }
+    }
+    return {direction: route[0], memory: route.slice(1)};
+}
+
+let test = new VillageState("Post Office",
+    [{place: "Alice's House", address: "Shop"}]);
+
+//runRobot(test,goalOrientedRobot,[]);
+
+function compareRobots(robot1,memory1,robot2,memory2){
+    function newRunRobot(state,robot,memory)
+    {
+        for (let turn = 0;;turn++)
+        {
+            if (state.parcels.length === 0)
+            {
+                return turn;
+            }
+            let action = robot(state,memory);
+            state = state.move(action.direction);
+            memory = action.memory;
+        }
+    }
+    let total1 = 0,total2 = 0;
+    for (let i = 0; i < 100; i++){
+        let task = VillageState.random(5);
+        total1 += newRunRobot(task,robot1,memory1);
+        total2 += newRunRobot(task,robot2,memory2);
+    }
+    return `First robot took on average ${total1/100} steps, and the second ${total2/100}`;
+}
+
+//console.log(compareRobots(randomRobot,[],goalOrientedRobot,[]));
+
+class PGroup {
+    constructor(group){
+        this.group = group;
+    }
+    add (...val) {
+        if (this.has(val)) {
+            return "Already a member";
+        }
+        return new PGroup(this.group.concat([...val]));
+    }
+    has (val) {
+        return this.group.includes(val);
+    }
+    delete (val) {
+        return new PGroup(PGroup.empty.group.concat(this.group.filter(el => el !== val)));
+    }
+}
+
+PGroup.empty = new PGroup([]);
+
+let a = PGroup.empty.add("a");
+let ab = a.add("b");
+let b = ab.delete("a");
+
+console.log(a);
+
+console.log(b.has("b"));
+// → true
+console.log(a.has("b"));
+// → false
+console.log(b.has("a"));
+// → false
+
+
+

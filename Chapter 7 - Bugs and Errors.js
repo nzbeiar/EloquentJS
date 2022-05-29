@@ -1,38 +1,30 @@
 class MultiplicatorUnitFailure extends Error {}
 
-const primitiveMultiply = (a,b) => {
-    let cases = Math.random();
-    if (cases < 0.2)
-    {
+const primitiveMultiply = (a, b) => {
+    if (Math.random() < 0.2) {
         return a * b;
-    }
-    else
-    {
-        throw new MultiplicatorUnitFailure("No luck, mate!");
+    } else {
+        throw new MultiplicatorUnitFailure("Klunk");
     }
 }
 
-const reliableMultiply = (a,b) => {
-    while(true)
-    {
+const reliableMultiply = (a, b) => {
+    while (true) {
         try {
-            return primitiveMultiply(a,b);
-        }
-        catch (err) {
-            if (!err instanceof MultiplicatorUnitFailure) {
-                throw err;
-            }
+            return primitiveMultiply(a, b);
+        } catch (e) {
+            if (!(e instanceof MultiplicatorUnitFailure))
+                throw e;
         }
     }
-
 }
 
-//console.log(reliableMultiply(8, 8));
 
 const box = {
-    locked: true,
+    locked: false,
     unlock() { this.locked = false; },
-    lock() { this.locked = true;},
+    lock() { this.locked = true;
+    },
     _content: [],
     get content() {
         if (this.locked) throw new Error("Locked!");
@@ -40,23 +32,19 @@ const box = {
     }
 };
 
-const withBoxUnlocked = (func) => {
-    if (box.locked === true) {
+const withBoxUnlocked = (body) => {
+    if (box.locked)
+    {
         box.unlock();
         try {
-            return func(3);
-        }
-        catch (err)
-        {
-            console.log("Something went wrong");
-        }
-        finally {
-            box.lock()
+            return body();
+        } finally {
+            box.lock();
         }
     }
     else
     {
-        return func(3);
+        return body();
     }
 }
 
@@ -69,7 +57,8 @@ try {
         throw new Error("Pirates on the horizon! Abort!");
     });
 } catch (e) {
-    console.log("Error raised: " + e);
+    console.log("Error raised:", e);
 }
+
 console.log(box.locked);
 // → true

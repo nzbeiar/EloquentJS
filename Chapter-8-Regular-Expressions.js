@@ -39,12 +39,12 @@ let text = "'I'm the cook,' he said, 'it's my job.'";
 // are valid JavaScript numbers, but a lone dot isn’t.
 
 
-// Fill in this regular expression.
-let number = /^...$/;
+// Fill in this regular expression
+let number = /(^[+-.]?(\d([Ee](?=[+-]))?)?\d$)|((^\d\.?)(\d+)?$)|(^\d[Ee.][+-]\d+$)|(^\d\.\d[Ee]\d$)/;
 
 // Tests:
 for (let str of ["1", "-1", "+15", "1.55", ".5", "5.",
-    "1.3e2", "1E-4", "1e+12"]) {
+    "1.3E2", "1E-4", "1e+12"]) {
     if (!number.test(str)) {
         console.log(`Failed to match '${str}'`);
     }

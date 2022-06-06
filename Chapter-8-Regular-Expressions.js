@@ -20,7 +20,7 @@ function verify(regexp, yes, no) {
         console.log(`Failure to match '${str}'`);
     }
     for (let str of no) if (regexp.test(str)) {
-        console.log(`Unexpected match for '${str}'`);
+          console.log(`Unexpected match for '${str}'`);
     }
 }
 
@@ -41,6 +41,7 @@ let text = "'I'm the cook,' he said, 'it's my job.'";
 
 // Fill in this regular expression
 let number = /(^[+-.]?(\d([Ee](?=[+-]))?)?\d$)|((^\d\.?)(\d+)?$)|(^\d[Ee.][+-]\d+$)|(^\d\.\d[Ee]\d$)/;
+
 
 // Tests:
 for (let str of ["1", "-1", "+15", "1.55", ".5", "5.",

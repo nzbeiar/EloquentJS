@@ -13,7 +13,7 @@ const roads = [
     "Shop-Town Hall"
 ];
 
-exports.buildGraph = function (edges) {
+export let buildGraph = function (edges) {
     let graph = Object.create(null);
     function addEdge(from,to){
         if (graph[from] == null){
@@ -24,13 +24,23 @@ exports.buildGraph = function (edges) {
             graph[from].push(to);
         }
     }
-    for (let [from,to] of edges){
+    for (let [from,to] of edges.map(el => el.split("-"))){
         addEdge(from,to);
         addEdge(to,from);
     }
     return graph;
 }
 
+let roadGraph = buildGraph(roads)
+let graph = {};
+for (let node of Object.keys(roadGraph)) {
+    let edges = graph[node] = {};
+    for (let dest of roadGraph[node]) {
+        edges[dest] = 1;
+    }
+}
+
+export default roadGraph;
 // let roadGraph = buildGraph(roads);
 //
 //

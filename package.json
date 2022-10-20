@@ -1,26 +1,9 @@
 {
-  "name": "z",
+  "name": "EloquentJS",
+  "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "Chapter-1-Program-structure.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nzbeiar/EloquentJS.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nzbeiar/EloquentJS/issues"
-  },
-  "homepage": "https://github.com/nzbeiar/EloquentJS#readme",
   "dependencies": {
     "date-names": "^0.1.13",
-    "dijkstrajs": "^1.0.2",
-    "format-date": "^1.0.0",
-    "ini": "^3.0.0",
     "ordinal": "^1.0.3"
   }
 }

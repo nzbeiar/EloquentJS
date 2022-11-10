@@ -19,7 +19,9 @@
         if (name == "Church Tower" || name == "Hawthorn" || name == "Chateau")
             storage["events on 2017-12-21"] = "Deep snow. Butcher's garbage can fell over. We chased off the ravens from Saint-Vulbas."
         let hash = 0
-        for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i)
+        for (let i = 0; i < name.length; i++) {
+            hash += name.charCodeAt(i)
+        }
         for (let y = 1985; y <= 2018; y++) {
             storage[`chicks in ${y}`] = hash % 6
             hash = Math.abs((hash << 2) ^ (hash + y))
@@ -30,7 +32,7 @@
         else if (name == "Chateau" || name == "Butcher Shop") storage.scalpel = "Butcher Shop"
         else storage.scalpel = "Big Oak"
         for (let prop of Object.keys(storage)) storage[prop] = JSON.stringify(storage[prop])
-        return storage
+        return storage;
     }
 
     class Network {
@@ -102,6 +104,7 @@
     }
 
     let network = new Network(connections, storageFor)
+    exports.storageFor = storageFor;
     exports.bigOak = network.nodes["Big Oak"]
     exports.everywhere = network.everywhere.bind(network)
     exports.defineRequestType = network.defineRequestType.bind(network)

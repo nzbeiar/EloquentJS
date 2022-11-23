@@ -10,7 +10,7 @@ export function parseExpression(program) {
     } else {
         throw new SyntaxError("Unexpected syntax: " + program);
     }
-    return parseApply(expr, program.slice(match[0].length));;
+    return parseApply(expr, program.slice(match[0].length));
 }
 export function skipSpace(string) {
     let first = string.search(/\S/);
@@ -45,3 +45,4 @@ export function parse(program) {
     }
     return expr;
 }
+

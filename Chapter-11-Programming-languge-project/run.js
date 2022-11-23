@@ -1,10 +1,13 @@
 import {run} from "./scope.js";
 
+
+
+
 run(`
-do(define(total, 0),
-    define(count, 1),
-    while(<(count, 11),
-        do(define(total, +(total, count)),
-            define(count, +(count, 1)))),
-    print(total))
+do(
+    define(ar, array(1,2,3,4,5)),
+    define(l,length(ar)),
+    print(ar),
+    print(l),
+    print(element(ar,2)))
 `);

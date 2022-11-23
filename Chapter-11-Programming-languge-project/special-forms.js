@@ -52,4 +52,14 @@ specialForms.fun = (args, scope) => {
         }
         return expr.name;
     });
-}
+    return function() {
+        if (arguments.length != params.length) {
+            throw new TypeError("Wrong number of arguments");
+        }
+        let localScope = Object.create(scope);
+        for (let i = 0; i < arguments.length; i++) {
+            localScope[params[i]] = arguments[i];
+        }
+        return evaluate(body, localScope);
+    };
+};

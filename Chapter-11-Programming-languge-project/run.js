@@ -8,6 +8,6 @@ do(
     define(ar, array(1,2,3,4,5)),
     define(l,length(ar)),
     print(ar),
-    print(l),
+    print(l),q
     print(element(ar,2)))
 `);

@@ -13,10 +13,12 @@ export function parseExpression(program) {
     return parseApply(expr, program.slice(match[0].length));
 }
 export function skipSpace(string) {
-    let first = string.search(/\S/);
-    if (first == -1) return "";
-    return string.slice(first);
+    let first = /(\s|#.+\n)*/.exec(string);
+    if (first === null) return "";
+    return string.slice(first[0].length);
 }
+
+console.log(parse("a # one\n   # two\n()"));
 
 export function parseApply(expr, program) {
     program = skipSpace(program);

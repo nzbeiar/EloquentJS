@@ -18,8 +18,6 @@ export function skipSpace(string) {
     return string.slice(first[0].length);
 }
 
-console.log(parse("a # one\n   # two\n()"));
-
 export function parseApply(expr, program) {
     program = skipSpace(program);
     if (program[0] != "(") {

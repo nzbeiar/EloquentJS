@@ -41,6 +41,32 @@ specialForms.define = (args, scope) => {
     return value;
 };
 
+//You will have to loop through one scope at a time, using Object.getPrototypeOf
+// to go to the next outer scope. For each scope, use hasOwnProperty to find out
+// whether the binding, indicated by the name property of the first argument to
+// set, exists in that scope. If it does, set it to the result of evaluating the second
+// argument to set and then return that value.
+// If the outermost scope is reached (Object.getPrototypeOf returns null) and
+// we haven’t found the binding yet, it doesn’t exist, and an error should be
+// thrown.
+
+
+specialForms.set = (args, env) => {
+    if (args.length !== 2 || args[0].type !== "word") {
+        throw new SyntaxError("Incorrect use of define");
+    }
+    let varName = args[0].name;
+    let value = evaluate(args[1], env);
+
+    for (let scope = env; scope; scope = Object.getPrototypeOf(scope)) {
+        if (Object.prototype.hasOwnProperty.call(scope, varName)) {
+            scope[varName] = value;
+            return value;
+        }
+    }
+    throw new ReferenceError(`Setting undefined variable ${varName}`);
+}
+
 specialForms.fun = (args, scope) => {
     if (!args.length) {
         throw new SyntaxError("Functions need a body");
